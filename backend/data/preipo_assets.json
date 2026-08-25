@@ -1,0 +1,641 @@
+{
+  "_pricing_basis_enum": {
+    "per_share_usd": "markPx = 每股 USD，per_share = markPx / multiplier",
+    "valuation_billion_usd": "markPx = 公司總估值（單位 billion USD），valuation = markPx × 1e9",
+    "valuation_per_billion_usd": "markPx = 估值/10億，valuation = markPx × 1e9 × multiplier",
+    "spot_token_per_share": "1 token ≈ N shares，per_share = markPx / multiplier",
+    "subscription_proxy": "Republic / Bitget IPO Prime 模式，valuation = markPx / subscription_price × initial_valuation"
+  },
+  "_source_family_enum": {
+    "perp_synth": "合成永續（CEX 衍生品鏈下定價，定價基準偏向 IPO 申請估值）",
+    "spv_mirror": "SPV 鏡像 token（SPV 結構受法律風險影響、鏈上流動性淺，系統性折價 60-70%）",
+    "ipo_prime": "Bitget IPO Prime 訂閱式（鎖定上線初始估值，浮動空間有限）"
+  },
+  "_research_date": "2026-05-21",
+  "_research_note": "Gemini review 2026-05-21 完全驗證 multiplier=1 配置正確。BingX V2=Ventuals 源、P2=PreStocks 源已透過 PRNewswire 公告與數學交叉驗證。PreStocks 67% 折價為真實市場結構性折價（CMC 歷史顯示 ATH 才 $872 從未到 $2000+），不是計算錯誤。",
+  "SPACEX": {
+    "company_name": "Space Exploration Technologies Corp.",
+    "total_supply_shares": 11870000000,
+    "total_supply_source": "刻意採『市場/oracle 口徑』11.87B（= 拆分前 2.374B × 5拆1）：各 CEX、Ventuals/Notice oracle、新聞頭條 $1.75T 全部用此數定價，維持估值與市場一致。注意：SEC 官方 S-1 + S-1/A(2026-06-01) 揭露拆分後實際流通股為 12,535,298,410（Class A 6.93B + Class B 5.60B, as of 2026-05-01），比 11.87B 高約 5.6%。經用戶確認維持 11.87B（換成官方值只會把所有 SpaceX 估值等比 +5.6%、不影響跨所價差%）。勿擅自改成 SEC 值。",
+    "valuation_currency": "USD",
+    "exchanges": {
+      "hyperliquid": [
+        {
+          "deployer": "xyz",
+          "symbol": "xyz:SPCX",
+          "pricing_basis": "per_share_usd",
+          "multiplier": 1,
+          "source_family": "perp_synth",
+          "settlement": "perpetual",
+          "deployer_full_name": "Trade.xyz",
+          "contract_size": 1,
+          "confidence": "verified",
+          "confidence_note": "Trade.xyz 上線公告原文：'$150 reference price × 11.87B fully diluted shares = $1.78T'",
+          "source_url": "https://www.coindesk.com/markets/2026/05/18/hype-pops-7-beating-bitcoin-declines-as-spacex-pre-ipo-lands-on-hyperliquid",
+          "source_type": "third_party_news"
+        },
+        {
+          "deployer": "vntl",
+          "symbol": "vntl:SPACEX",
+          "pricing_basis": "valuation_billion_usd",
+          "multiplier": 1,
+          "source_family": "perp_synth",
+          "settlement": "perpetual",
+          "deployer_full_name": "Ventuals",
+          "contract_size": 1,
+          "confidence": "verified",
+          "confidence_note": "Ventuals docs 明文：'price = company valuation / 1 billion'",
+          "source_url": "https://docs.ventuals.com/overview/markets",
+          "source_type": "official_docs"
+        }
+      ],
+      "okx": [
+        {
+          "symbol": "SPCX-USDT-SWAP",
+          "ws_symbol": "SPCX-USDT-SWAP",
+          "pricing_basis": "per_share_usd",
+          "multiplier": 1,
+          "source_family": "perp_synth",
+          "settlement": "perpetual",
+          "contract_size": 1,
+          "confidence": "verified",
+          "confidence_note": "OKX 原始公告：'1 SPACEX ≈ 1/1B of market cap, estimated share count 1B, rebase on S-1'（valuation_per_billion 制）。SpaceX 2026-05-20 提交 S-1 揭露實際股數 → OKX 依公告執行 rebase（同時 ticker 由 SPACEX 改名 SPCX、經 5-for-1 拆分），合約改成每股制：ctValCcy=SPCX、1 張=1 股，markPx 即每股 USD。實測 $186.94 × 11.87B = $2.22T，對齊 aster/binance/bitget perp/mexc/hyperliquid 每股群（若仍用 valuation_per_billion 會誤算成 $0.187T，低約 12 倍）",
+          "source_url": "https://www.okx.com/en-us/help/okx-to-list-pre-ipo-pre-market-perpetual-futures-for-spacex-usdt-openai-usdt-and-anthropic-usdt",
+          "source_type": "official_announcement",
+          "source_url_secondary": "https://www.okx.com/en-us/help/pre-ipo-perpetual-futures",
+          "source_url_secondary_note": "OKX：公司提交 S-1 揭露實際股數後執行 Rebase，使持倉價值不變"
+        }
+      ],
+      "aster": [
+        {
+          "symbol": "SPCXUSDT",
+          "ws_symbol": "SPCXUSDT",
+          "pricing_basis": "per_share_usd",
+          "multiplier": 1,
+          "source_family": "perp_synth",
+          "settlement": "perpetual",
+          "contract_size": 1,
+          "confidence": "partial",
+          "confidence_note": "Aster Twitter 口徑明確 'per-share' 但無 contract spec 表",
+          "source_url": "https://x.com/Aster_DEX",
+          "source_type": "official_twitter"
+        }
+      ],
+      "bingx": [
+        {
+          "symbol": "NCSKSPACEXV2USD-USDT",
+          "ws_symbol": "NCSKSPACEXV2USD-USDT",
+          "variant": "V2",
+          "pricing_basis": "valuation_per_billion_usd",
+          "multiplier": 1,
+          "source_family": "perp_synth",
+          "settlement": "perpetual",
+          "notes": "V2 = Ventuals 來源（BingX 2026/04/14 上線），跟 vntl:SPACEX 同價位",
+          "contract_size": 1e-06,
+          "confidence": "inferred",
+          "confidence_note": "BingX 無官方 contract spec；本系統推測 = Ventuals 源（valuation_per_billion）",
+          "source_url": "https://www.prnewswire.com/news-releases/bingx-brings-spacex-pre-ipo-exposure-on-chain-expanding-its-gateway-to-future-valued-assets-302745544.html",
+          "source_type": "third_party_news"
+        },
+        {
+          "symbol": "NCSKSPCX2USD-USDT",
+          "ws_symbol": "NCSKSPCX2USD-USDT",
+          "variant": "PERSHARE",
+          "pricing_basis": "per_share_usd",
+          "multiplier": 1,
+          "source_family": "perp_synth",
+          "settlement": "perpetual",
+          "notes": "BingX 第 3 變體，命名無 V2/P2 後綴（contractId=102765, displayName=SPCX-USDT），per-share 制（跟 Aster/Bitget 永續/Ourbit 永續同口徑）",
+          "contract_size": 1e-05,
+          "confidence": "inferred",
+          "confidence_note": "REST premiumIndex 實測 mark=$203.29 → 11.87B × 203 ≈ $2.41T 對應 perp_synth；contract_size=0.00001 跟 V2/P2 都不同",
+          "source_url": "https://bingx.com/en/perpetual/NCSKSPCX2USD-USDT",
+          "source_type": "exchange_trade_page"
+        }
+      ],
+      "gateio": [
+        {
+          "symbol": "SPACEX_USDT",
+          "ws_symbol": "SPACEX_USDT",
+          "pricing_basis": "valuation_per_billion_usd",
+          "multiplier": 1,
+          "source_family": "perp_synth",
+          "settlement": "perpetual",
+          "contract_size": 0.01,
+          "confidence": "inferred",
+          "confidence_note": "Gate Futures 頁面未公開 contract spec；本系統依價位反推 valuation_per_billion",
+          "source_url": "https://www.gate.com/futures/USDT/SPACEX_USDT",
+          "source_type": "exchange_trade_page"
+        },
+        {
+          "symbol": "SPCX_USDT",
+          "ws_symbol": "SPCX_USDT",
+          "pricing_basis": "per_share_usd",
+          "multiplier": 1,
+          "source_family": "perp_synth",
+          "settlement": "perpetual",
+          "contract_size": 0.01,
+          "notes": "Gate 第 2 變體永續（is_pre_market=true），per-share 制；跟既有 SPACEX_USDT 並存但定價基準不同",
+          "confidence": "inferred",
+          "confidence_note": "Gate futures REST 實測 mark=$201.28 → 11.87B × 201 ≈ $2.39T 對應 perp_synth",
+          "source_url": "https://www.gate.com/futures/USDT/SPCX_USDT",
+          "source_type": "exchange_trade_page"
+        },
+        {
+          "symbol": "SPCX_USDT",
+          "ws_symbol": "SPCX_USDT",
+          "pricing_basis": "per_share_usd",
+          "multiplier": 1,
+          "source_family": "perp_synth",
+          "settlement": "spot",
+          "notes": "Gate spot SPCX，base=SPCX/base_name=SpaceX",
+          "contract_size": null,
+          "confidence": "inferred",
+          "confidence_note": "Gate spot REST 實測 last=$182.92 → 11.87B × 183 ≈ $2.17T；現貨略低於永續符合 per-share 結構",
+          "source_url": "https://www.gate.com/price/spacex-spcx",
+          "source_type": "exchange_trade_page"
+        }
+      ],
+      "ourbit": [
+        {
+          "symbol": "SPCX_USDT",
+          "ws_symbol": "SPCX_USDT",
+          "pricing_basis": "per_share_usd",
+          "multiplier": 1,
+          "source_family": "perp_synth",
+          "settlement": "perpetual",
+          "contract_size": 0.01,
+          "confidence": "inferred",
+          "confidence_note": "Ourbit 與 MEXC 媒體上標示『戰略夥伴關係』（無公開白標證據）；per_share basis 依盤面行為反推（與 Gate spot SPCX 流動性對齊）",
+          "source_url": "https://www.ourbit.com/zh-TW/futures/SPCX_USDT",
+          "source_type": "exchange_trade_page"
+        },
+        {
+          "symbol": "SPAXUSDT",
+          "ws_symbol": "SPAXUSDT",
+          "pricing_basis": "per_share_usd",
+          "multiplier": 1,
+          "source_family": "perp_synth",
+          "settlement": "spot",
+          "contract_size": null,
+          "notes": "Ourbit spot SPAX（base=SPAX），跟 Gate spot SPCX 價位幾乎完全一致（$182.86 vs $182.92），同流動性源",
+          "issuance_type": "subscription",
+          "issuance_note": "Ourbit Super IPO SPAX 發行結構為訂閱式（$589 × 3,400 tokens = $2M 募資），結構接近 Bitget IPO Prime / Gate Pre-IPOs。本欄位記錄發行事實，但 pricing_basis 與 source_family 依『實際流動性表現』分類（與 Gate spot SPCX 對齊 per_share），不依發行結構，避免破壞 family-based sanity check",
+          "confidence": "inferred",
+          "confidence_note": "Ourbit spot WS（wbs.ourbit.com/ws）實測 bid=$182.75 ask=$182.86 → $2.17T 對應 per_share",
+          "source_url": "https://www.blocktempo.com/ourbit-launches-super-ipo-for-spacex-shares-at-589-usdt/",
+          "source_type": "third_party_news"
+        }
+      ],
+      "bitget": [
+        {
+          "symbol": "preSPCX",
+          "bitget_spot_symbol": "PRESPCXUSDT",
+          "pricing_basis": "subscription_proxy",
+          "subscription_price": 130,
+          "initial_valuation_usd": 1500000000000,
+          "source_family": "ipo_prime",
+          "settlement": "spot",
+          "contract_size": null,
+          "confidence": "verified",
+          "confidence_note": "Bitget IPO Prime 訂閱規格：原始 $650 × 94,000 tokens → $1.5T 初始估值。Bitget 公告 preSPAX 1:5 拆分（1 token → 5 tokens，每枚價格 ÷5）→ subscription_price ÷5 從 $650 → $130，initial_valuation $1.5T 不動（公司估值沒變）。拆分後實測 $174.51/$130×$1.5T ≈ $2.01T，對齊 MEXC preSPACEX($1.9T) 與 SPACEX 家族 ~$2T",
+          "source_url": "https://www.bitget.com/blog/articles/bitget-ipo-prime-prespax-subscription-launch",
+          "source_type": "official_announcement",
+          "source_url_secondary": "https://www.bitget.com/zh-TC/news/detail/12560605423072",
+          "source_url_secondary_note": "Bitget 官方公告：preSPAX 代幣拆分，拆分比例為 1:5"
+        },
+        {
+          "symbol": "SPCXUSDT",
+          "ws_symbol": "SPCXUSDT",
+          "pricing_basis": "per_share_usd",
+          "multiplier": 1,
+          "source_family": "perp_synth",
+          "settlement": "perpetual",
+          "contract_size": 0.01,
+          "notes": "Bitget USDT-FUTURES RWA 永續（isRwa=YES, maxLever=5），baseCoin=SPCX，跟既有 preSPAX 訂閱式現貨完全不同來源",
+          "confidence": "inferred",
+          "confidence_note": "Bitget perp WS 實測 last=$203.97 mark=$203.86 → 11.87B × 204 ≈ $2.42T 對應 perp_synth",
+          "source_url": "https://www.bitget.com/news/detail/12560605422327",
+          "source_type": "official_announcement"
+        }
+      ],
+      "prestocks": [
+        {
+          "symbol": "PreStocks:SPACEX",
+          "prestocks_pool": "v4D5b4knJ83WzErtDiugxChUZUfWxe2FtDLguarvgFc",
+          "mint": "PreANxuXjsy2pvisWWMNB6YaJNzr7681wJJr2rHsfTh",
+          "pricing_basis": "api_direct",
+          "multiplier": 1,
+          "source_family": "spv_mirror",
+          "settlement": "spot_solana",
+          "notes": "data_source=prestocks_api; impliedValuation 由官方 API 提供",
+          "contract_size": null,
+          "confidence": "verified",
+          "confidence_note": "PreStocks 官方 API (prestocks.com/api/<symbol>) 直接給 impliedValuation/markValuation；每個 mint SPV 規模不同、無法用統一公式換算，故 pricing_basis=api_direct、由 aggregator 在 runtime 直接套用 API 數字",
+          "source_url": "https://prestocks.com/spacex",
+          "source_type": "official_docs"
+        }
+      ],
+      "binance": [
+        {
+          "symbol": "SPCXUSDT",
+          "ws_symbol": "SPCXUSDT",
+          "pricing_basis": "per_share_usd",
+          "multiplier": 1,
+          "source_family": "perp_synth",
+          "settlement": "perpetual",
+          "notes": "Binance Pre-IPO Perp 2026-05-21 上線，minTradeAmount=0.01 SPCX。markPx=過去 10s 成交均價，IPO 後才 rebase。Funding Pre-IPO 期 +0.005%/8h",
+          "contract_size": 0.01,
+          "confidence": "partial",
+          "confidence_note": "Binance 公告明文：2026-05-21 上線 SPCXUSDT Pre-IPO 永續、USDT 結算、0.01 SPCX min trade。PRNewswire/CoinDesk 公告原文僅寫 'continuous pricing reflecting publicly available pricing signals'，未明文 markPx 公式（'avg last 10s' 為依社群資訊推測，需以 Binance 內部 support article 為準）",
+          "source_url": "https://www.prnewswire.com/news-releases/binance-launches-perpetual-futures-for-pre-ipo-market-exposure-starting-with-spacex-302778513.html",
+          "source_type": "third_party_news"
+        }
+      ],
+      "mexc": [
+        {
+          "symbol": "SPCXSTOCK_USDT",
+          "ws_symbol": "SPCXSTOCK_USDT",
+          "pricing_basis": "per_share_usd",
+          "multiplier": 1,
+          "source_family": "perp_synth",
+          "settlement": "perpetual",
+          "notes": "MEXC SpaceX 第二變體，per-share 制（跟 xyz/aster 同單位）",
+          "contract_size": 0.01,
+          "confidence": "inferred",
+          "confidence_note": "找不到 MEXC SPCXSTOCK 公告；推測 per_share basis",
+          "source_url": "https://www.mexc.com/futures/SPCXSTOCK_USDT",
+          "source_type": "exchange_trade_page"
+        },
+        {
+          "symbol": "SPACEX(PRE)USDT",
+          "ws_symbol": "SPACEX(PRE)USDT",
+          "pricing_basis": "subscription_proxy",
+          "subscription_price": 130,
+          "initial_valuation_usd": 1500000000000,
+          "multiplier": 1,
+          "source_family": "ipo_prime",
+          "settlement": "spot",
+          "contract_size": null,
+          "notes": "MEXC spot 第 3 變體，base=SPACEX(PRE)（括號為真實 symbol 字串），Pre-Market 預掛單 → 走 BG IPO Prime 同款 subscription_proxy。MEXC spot WS V3 已升級 protobuf，本 connector 破例走 REST polling（同 BingX funding pattern）。2026-05-22 MEXC 公告 1:5 拆分（1 token → 5 tokens，每枚價格 ÷5）：subscription_price 也 ÷5 從 $650 → $130，initial_valuation $1.5T 不動（公司估值沒變）",
+          "confidence": "verified",
+          "confidence_note": "MEXC Launchpad 官方活動頁明文：$650 USDT × 7,700 tokens 認購（subscription_proxy 規格）。2026-05-22 公告 1:5 拆分 → subscription_price ÷5 = $130，initial_valuation $1.5T 不動。拆分後實測 $188.99/$130×$1.5T ≈ $2.18T 對應 ipo_prime",
+          "source_url": "https://www.mexc.com/launchpad/spacex-pre/6a0166cbe4b00b2b9a6822ba",
+          "source_type": "official_announcement",
+          "source_url_secondary": "https://blog.mexc.com/press-release/mexc-spacexpre-launchpad-subscriptions-surpass-56-million/",
+          "source_url_secondary_note": "MEXC 官方 blog 新聞稿，內文含 1:5 拆分說明（站內 announcement article slug 無法外部檢索）"
+        }
+      ]
+    }
+  },
+  "OPENAI": {
+    "company_name": "OpenAI",
+    "total_supply_shares": 0,
+    "total_supply_source": "OpenAI 非營利+營利混合架構，公開股數未確認",
+    "valuation_currency": "USD",
+    "exchanges": {
+      "hyperliquid": [
+        {
+          "deployer": "vntl",
+          "symbol": "vntl:OPENAI",
+          "pricing_basis": "valuation_billion_usd",
+          "multiplier": 1,
+          "source_family": "perp_synth",
+          "settlement": "perpetual",
+          "contract_size": 1,
+          "confidence": "verified",
+          "confidence_note": "Ventuals docs 同 SPACEX 機制",
+          "source_url": "https://docs.ventuals.com/overview/markets",
+          "source_type": "official_docs"
+        }
+      ],
+      "okx": [
+        {
+          "symbol": "OPENAI-USDT-SWAP",
+          "ws_symbol": "OPENAI-USDT-SWAP",
+          "pricing_basis": "valuation_per_billion_usd",
+          "multiplier": 1,
+          "source_family": "perp_synth",
+          "settlement": "perpetual",
+          "contract_size": 1,
+          "confidence": "verified",
+          "confidence_note": "OKX 同公告",
+          "source_url": "https://www.okx.com/en-us/help/okx-to-list-pre-ipo-pre-market-perpetual-futures-for-spacex-usdt-openai-usdt-and-anthropic-usdt",
+          "source_type": "official_announcement"
+        }
+      ],
+      "bingx": [
+        {
+          "symbol": "NCSKOPENAIV2USD-USDT",
+          "ws_symbol": "NCSKOPENAIV2USD-USDT",
+          "variant": "V2",
+          "pricing_basis": "valuation_per_billion_usd",
+          "multiplier": 1,
+          "source_family": "perp_synth",
+          "settlement": "perpetual",
+          "contract_size": 1e-06,
+          "confidence": "inferred",
+          "confidence_note": "同 BingX V2",
+          "source_url": "https://www.prnewswire.com/apac/news-releases/bingx-becomes-first-exchange-to-offer-openai-pre-ipo-airdrop-302776315.html",
+          "source_type": "third_party_news"
+        },
+        {
+          "symbol": "NCSKOPENAI2USD-USDT",
+          "ws_symbol": "NCSKOPENAI2USD-USDT",
+          "variant": "PERSHARE",
+          "pricing_basis": "valuation_per_billion_usd",
+          "multiplier": 1,
+          "source_family": "perp_synth",
+          "settlement": "perpetual",
+          "notes": "BingX 第 2 個 OPENAI 變體（contractId=102767, displayName=OPENAI(Pre-IPO)-USDT），launchTime=2026-05-26 14:35 UTC, size=0.000001, tradeMinQuantity=0.00131。命名跟 NCSKSPCX2USD-USDT 同 pattern（無 V2/P2 後綴），跟同期上線的 Binance OPENAIUSDT 價位接近（$1555 vs $1509）推測共用同一 underlier",
+          "contract_size": 1e-06,
+          "confidence": "inferred",
+          "confidence_note": "BingX 無官方 contract spec。系統實測：markPx $1469 跟同期 Binance OPENAIUSDT ($1458) / OKX OPENAI-USDT-SWAP ($1467) 完全對齊 → 確定是 valuation_per_billion_usd 單位制。命名同 NCSKOPENAIV2USD-USDT（既有 V2 也是 valuation_per_billion），結構一致",
+          "source_url": "https://bingx.com/en/perpetual/NCSKOPENAI2USD-USDT",
+          "source_type": "exchange_trade_page"
+        }
+      ],
+      "gateio": [
+        {
+          "symbol": "OPENAI_USDT",
+          "ws_symbol": "OPENAI_USDT",
+          "pricing_basis": "valuation_per_billion_usd",
+          "multiplier": 1,
+          "source_family": "perp_synth",
+          "settlement": "perpetual",
+          "contract_size": 0.01,
+          "confidence": "inferred",
+          "confidence_note": "同 Gate SPACEX",
+          "source_url": "https://www.gate.com/futures/USDT/OPENAI_USDT",
+          "source_type": "exchange_trade_page"
+        }
+      ],
+      "bitget": [
+        {
+          "symbol": "preOPAI",
+          "bitget_spot_symbol": "PREOPAIUSDT",
+          "pricing_basis": "subscription_proxy",
+          "subscription_price": 725,
+          "initial_valuation_usd": 898210000000,
+          "source_family": "ipo_prime",
+          "settlement": "spot",
+          "contract_size": null,
+          "confidence": "verified",
+          "confidence_note": "Bitget IPO Prime 規格 $725 × 29082 → $898.21B",
+          "source_url": "https://www.bitget.com/academy/guide-to-openai-preopai-on-bitget-ipo-prime",
+          "source_type": "official_announcement"
+        }
+      ],
+      "prestocks": [
+        {
+          "symbol": "PreStocks:OPENAI",
+          "prestocks_pool": "Y6wSJPjwcnfY8sHM2b3gTht3gGCGdf838gRkQJpfNYe",
+          "mint": "PreweJYECqtQwBtpxHL171nL2K6umo692gTm7Q3rpgF",
+          "pricing_basis": "api_direct",
+          "multiplier": 1,
+          "source_family": "spv_mirror",
+          "settlement": "spot_solana",
+          "notes": "data_source=prestocks_api; impliedValuation 由官方 API 提供",
+          "contract_size": null,
+          "confidence": "verified",
+          "confidence_note": "PreStocks 官方 API (prestocks.com/api/<symbol>) 直接給 impliedValuation/markValuation；每個 mint SPV 規模不同、無法用統一公式換算，故 pricing_basis=api_direct、由 aggregator 在 runtime 直接套用 API 數字",
+          "source_url": "https://prestocks.com/openai",
+          "source_type": "official_docs"
+        }
+      ],
+      "mexc": [
+        {
+          "symbol": "OPENAI_USDT",
+          "ws_symbol": "OPENAI_USDT",
+          "pricing_basis": "valuation_per_billion_usd",
+          "multiplier": 1,
+          "source_family": "perp_synth",
+          "settlement": "perpetual",
+          "contract_size": 0.001,
+          "confidence": "inferred",
+          "confidence_note": "MEXC 永續無 spec",
+          "source_url": "https://www.mexc.com/futures/OPENAI_USDT",
+          "source_type": "exchange_trade_page"
+        }
+      ],
+      "binance": [
+        {
+          "symbol": "OPENAIUSDT",
+          "ws_symbol": "OPENAIUSDT",
+          "pricing_basis": "valuation_per_billion_usd",
+          "multiplier": 1,
+          "source_family": "perp_synth",
+          "settlement": "perpetual",
+          "notes": "Binance 第 2 個 Pre-IPO Perp（contractType=TRADIFI_PERPETUAL, underlyingType=PREMARKET, underlyingSubType=Pre-IPO），onboardDate=2026-05-27 12:30 UTC, minQty=0.01 OPENAI, tickSize=0.01, fundingRate +0.005%/8h（跟 SPCXUSDT 同制）",
+          "contract_size": 0.01,
+          "confidence": "inferred",
+          "confidence_note": "Binance fapi/exchangeInfo 已確認 spec（LOT_SIZE minQty=0.01, tickSize=0.01, contractType=TRADIFI_PERPETUAL, onboardDate=2026-05-27 12:30 UTC, funding +0.005%/8h）。pricing_basis 系統實測反推：markPx $1458 跟同期 OKX OPENAI-USDT-SWAP ($1467, valuation_per_billion) / vntl:OPENAI ($1357, valuation_billion) / MEXC OPENAI_USDT ($1456) 數量級完全對齊 → 確定是 valuation_per_billion_usd 單位制（不是 per_share）。公告原文 PRNewswire 未明文 spec 算法，故 confidence=inferred",
+          "source_url": "https://www.prnewswire.com/news-releases/binance-expands-pre-ipo-perpetuals-with-openai-listing-following-strong-early-market-response-302781593.html",
+          "source_type": "official_announcement"
+        }
+      ]
+    }
+  },
+  "ANTHROPIC": {
+    "company_name": "Anthropic PBC",
+    "total_supply_shares": 0,
+    "total_supply_source": "未公開",
+    "valuation_currency": "USD",
+    "exchanges": {
+      "hyperliquid": [
+        {
+          "deployer": "vntl",
+          "symbol": "vntl:ANTHROPIC",
+          "pricing_basis": "valuation_billion_usd",
+          "multiplier": 1,
+          "source_family": "perp_synth",
+          "settlement": "perpetual",
+          "contract_size": 1,
+          "confidence": "verified",
+          "confidence_note": "Ventuals docs 同機制",
+          "source_url": "https://docs.ventuals.com/overview/markets",
+          "source_type": "official_docs"
+        }
+      ],
+      "okx": [
+        {
+          "symbol": "ANTHROPIC-USDT-SWAP",
+          "ws_symbol": "ANTHROPIC-USDT-SWAP",
+          "pricing_basis": "valuation_per_billion_usd",
+          "multiplier": 1,
+          "source_family": "perp_synth",
+          "settlement": "perpetual",
+          "contract_size": 1,
+          "confidence": "verified",
+          "confidence_note": "OKX 同公告",
+          "source_url": "https://www.okx.com/en-us/help/okx-to-list-pre-ipo-pre-market-perpetual-futures-for-spacex-usdt-openai-usdt-and-anthropic-usdt",
+          "source_type": "official_announcement"
+        }
+      ],
+      "gateio": [
+        {
+          "symbol": "ANTHROPIC_USDT",
+          "ws_symbol": "ANTHROPIC_USDT",
+          "pricing_basis": "valuation_per_billion_usd",
+          "multiplier": 1,
+          "source_family": "perp_synth",
+          "settlement": "perpetual",
+          "contract_size": 0.01,
+          "confidence": "inferred",
+          "confidence_note": "Gate 永續無 spec",
+          "source_url": "https://www.gate.com/futures/USDT/ANTHROPIC_USDT",
+          "source_type": "exchange_trade_page"
+        }
+      ],
+      "prestocks": [
+        {
+          "symbol": "PreStocks:ANTHROPIC",
+          "prestocks_pool": "HhABC2WjgUq6xYUSA92diUuQ8A9rxoXaWbN38KQkhZSt",
+          "mint": "Pren1FvFX6J3E4kXhJuCiAD5aDmGEb7qJRncwA8Lkhw",
+          "pricing_basis": "api_direct",
+          "multiplier": 1,
+          "source_family": "spv_mirror",
+          "settlement": "spot_solana",
+          "contract_size": null,
+          "confidence": "verified",
+          "confidence_note": "PreStocks 官方 API (prestocks.com/api/<symbol>) 直接給 impliedValuation/markValuation；每個 mint SPV 規模不同、無法用統一公式換算，故 pricing_basis=api_direct、由 aggregator 在 runtime 直接套用 API 數字",
+          "notes": "data_source=prestocks_api; impliedValuation 由官方 API 提供",
+          "source_url": "https://prestocks.com/anthropic",
+          "source_type": "official_docs"
+        }
+      ],
+      "mexc": [
+        {
+          "symbol": "ANTHROPIC_USDT",
+          "ws_symbol": "ANTHROPIC_USDT",
+          "pricing_basis": "valuation_per_billion_usd",
+          "multiplier": 1,
+          "source_family": "perp_synth",
+          "settlement": "perpetual",
+          "contract_size": 0.001,
+          "confidence": "inferred",
+          "confidence_note": "MEXC 永續無 spec",
+          "source_url": "https://www.mexc.com/futures/ANTHROPIC_USDT",
+          "source_type": "exchange_trade_page"
+        }
+      ],
+      "bingx": [
+        {
+          "symbol": "NCSKANTHROPIC2USD-USDT",
+          "ws_symbol": "NCSKANTHROPIC2USD-USDT",
+          "variant": "PERSHARE",
+          "pricing_basis": "valuation_per_billion_usd",
+          "multiplier": 1,
+          "source_family": "perp_synth",
+          "settlement": "perpetual",
+          "notes": "BingX ANTHROPIC 首個變體（contractId=102766, displayName=ANTHROPIC(Pre-IPO)-USDT），launchTime=2026-05-26 14:35 UTC, size=0.000001, tradeMinQuantity=0.001137。跟 NCSKOPENAI2USD-USDT 同批上線、結構完全相同",
+          "contract_size": 1e-06,
+          "confidence": "inferred",
+          "confidence_note": "BingX 無官方 contract spec。系統實測：markPx $1708.7 跟同期 OKX ANTHROPIC-USDT-SWAP ($1709.2) / Gate ANTHROPIC_USDT ($1692.99) / MEXC ANTHROPIC_USDT ($1708.5) 完全對齊 → 確定是 valuation_per_billion_usd 單位制（誤差 < 0.5%）",
+          "source_url": "https://bingx.com/en/perpetual/NCSKANTHROPIC2USD-USDT",
+          "source_type": "exchange_trade_page"
+        }
+      ]
+    }
+  },
+  "ANDURIL": {
+    "company_name": "Anduril Industries",
+    "total_supply_shares": 0,
+    "total_supply_source": "未公開",
+    "valuation_currency": "USD",
+    "exchanges": {
+      "prestocks": [
+        {
+          "symbol": "PreStocks:ANDURIL",
+          "prestocks_pool": "Gug9TrrLMoz8NpC4pE8ANQ6H7XzMMZYPuu1EJCn59ZwM",
+          "mint": "PresTj4Yc2bAR197Er7wz4UUKSfqt6FryBEdAriBoQB",
+          "pricing_basis": "api_direct",
+          "multiplier": 1,
+          "source_family": "spv_mirror",
+          "settlement": "spot_solana",
+          "contract_size": null,
+          "confidence": "verified",
+          "confidence_note": "PreStocks 官方 API (prestocks.com/api/<symbol>) 直接給 impliedValuation/markValuation；每個 mint SPV 規模不同、無法用統一公式換算，故 pricing_basis=api_direct、由 aggregator 在 runtime 直接套用 API 數字",
+          "notes": "data_source=prestocks_api; impliedValuation 由官方 API 提供",
+          "source_url": "https://prestocks.com/anduril",
+          "source_type": "official_docs"
+        }
+      ]
+    }
+  },
+  "NEURALINK": {
+    "company_name": "Neuralink",
+    "total_supply_shares": 0,
+    "total_supply_source": "未公開",
+    "valuation_currency": "USD",
+    "exchanges": {
+      "prestocks": [
+        {
+          "symbol": "PreStocks:NEURALINK",
+          "prestocks_pool": "EyyeCgFRX8GBvBU8PBupYKr2LRTewYo7m6YkTKCZHjWv",
+          "mint": "PrekqLJvJ3qVdXmBGDiexvwUTF4rLFDa6HWS4HJbw9S",
+          "pricing_basis": "api_direct",
+          "multiplier": 1,
+          "source_family": "spv_mirror",
+          "settlement": "spot_solana",
+          "contract_size": null,
+          "confidence": "verified",
+          "confidence_note": "PreStocks 官方 API (prestocks.com/api/<symbol>) 直接給 impliedValuation/markValuation；每個 mint SPV 規模不同、無法用統一公式換算，故 pricing_basis=api_direct、由 aggregator 在 runtime 直接套用 API 數字",
+          "notes": "data_source=prestocks_api; impliedValuation 由官方 API 提供",
+          "source_url": "https://prestocks.com/neuralink",
+          "source_type": "official_docs"
+        }
+      ]
+    }
+  },
+  "KALSHI": {
+    "company_name": "Kalshi",
+    "total_supply_shares": 0,
+    "total_supply_source": "未公開",
+    "valuation_currency": "USD",
+    "exchanges": {
+      "prestocks": [
+        {
+          "symbol": "PreStocks:KALSHI",
+          "prestocks_pool": "FoL5dFhV7XUootAbrqDdA72oXL8HExspLNRt1tuJNv53",
+          "mint": "PreLWGkkeqG1s4HEfFZSy9moCrJ7btsHuUtfcCeoRua",
+          "pricing_basis": "api_direct",
+          "multiplier": 1,
+          "source_family": "spv_mirror",
+          "settlement": "spot_solana",
+          "contract_size": null,
+          "confidence": "verified",
+          "confidence_note": "PreStocks 官方 API (prestocks.com/api/<symbol>) 直接給 impliedValuation/markValuation；每個 mint SPV 規模不同、無法用統一公式換算，故 pricing_basis=api_direct、由 aggregator 在 runtime 直接套用 API 數字",
+          "notes": "data_source=prestocks_api; impliedValuation 由官方 API 提供",
+          "source_url": "https://prestocks.com/kalshi",
+          "source_type": "official_docs"
+        }
+      ]
+    }
+  },
+  "POLYMARKET": {
+    "company_name": "Polymarket",
+    "total_supply_shares": 0,
+    "total_supply_source": "未公開",
+    "valuation_currency": "USD",
+    "exchanges": {
+      "prestocks": [
+        {
+          "symbol": "PreStocks:POLYMARKET",
+          "prestocks_pool": "gPchZYUR4prBpYr4BQDZdB4fwYxWSh8h2rY83CQxN61",
+          "mint": "Pre8AREmFPtoJFT8mQSXQLh56cwJmM7CFDRuoGBZiUP",
+          "pricing_basis": "api_direct",
+          "multiplier": 1,
+          "source_family": "spv_mirror",
+          "settlement": "spot_solana",
+          "contract_size": null,
+          "confidence": "verified",
+          "confidence_note": "PreStocks 官方 API (prestocks.com/api/<symbol>) 直接給 impliedValuation/markValuation；每個 mint SPV 規模不同、無法用統一公式換算，故 pricing_basis=api_direct、由 aggregator 在 runtime 直接套用 API 數字",
+          "notes": "data_source=prestocks_api; impliedValuation 由官方 API 提供",
+          "source_url": "https://prestocks.com/polymarket",
+          "source_type": "official_docs"
+        }
+      ]
+    }
+  }
+}
